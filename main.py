@@ -54,9 +54,10 @@ def main(args):
                              fast_dev_run=hparams.fast_dev_run,
                              callbacks=[checkpoint_callback],
                              num_sanity_val_steps=16 if hparams.batch_size > 63 else 100,
-                             val_check_interval=1.0 if hparams.epochs > 4 else 0.1,
+                             limit_val_batches = 0.0,
                              accumulate_grad_batches=hparams.accumulate_grad_batches,
                              limit_train_batches=50 if hparams.test_run else 1.0
+                            #  val_check_interval=1000000,
                              )
     else:
         # pytorch lightning before 1.4.4
@@ -70,9 +71,10 @@ def main(args):
                              fast_dev_run=hparams.fast_dev_run,
                              callbacks=[checkpoint_callback],
                              num_sanity_val_steps=16 if hparams.batch_size > 63 else 100,
-                             val_check_interval=1.0 if hparams.epochs > 4 else 0.1,
                              accumulate_grad_batches=hparams.accumulate_grad_batches,
-                             limit_train_batches=50 if hparams.test_run else 1.0
+                             limit_train_batches=50 if hparams.test_run else 1.0,
+                             limit_val_batches = 0.0,
+                            #  val_check_interval=1000000,
                              )
 
     if not hparams.evaluate:
@@ -81,11 +83,12 @@ def main(args):
         trainer.fit(trainer_mod, data_mod)
         print('start evaluating')
         print('evaluating from ', checkpoint_callback.best_model_path)
-        trainer.test(ckpt_path='best', datamodule=data_mod)
+        # trainer.test(ckpt_path='best', datamodule=data_mod)
     else:
+        pass
         # eval only
-        print('start evaluating')
-        trainer.test(trainer_mod, datamodule=data_mod)
+        # print('start evaluating')
+        # trainer.test(trainer_mod, datamodule=data_mod)
 
 
 if __name__ == '__main__':
