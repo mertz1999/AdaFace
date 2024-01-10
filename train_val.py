@@ -54,10 +54,10 @@ class Trainer(LightningModule):
         if scheduler is None:
             raise ValueError('lr calculation not successful')
 
-        if isinstance(scheduler, lr_scheduler._LRScheduler):
-            lr = scheduler.get_last_lr()[0]
-        else:
-            lr = scheduler.get_epoch_values(self.current_epoch)[0]
+        # if isinstance(scheduler, lr_scheduler._LRScheduler):
+        lr = scheduler.get_last_lr()[0]
+        # else:
+            # lr = scheduler.get_epoch_values(self.current_epoch)[0]
         return lr
 
 
