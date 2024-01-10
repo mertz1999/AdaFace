@@ -34,6 +34,7 @@ def get_args():
     parent_parser.add_argument('--start_from_model_statedict', type=str, default='')
     parent_parser.add_argument('--use_wandb', action='store_true')
     parent_parser.add_argument('--custom_num_class', type=int, default=-1)
+    parent_parser.add_argument('--output_dir', type=str, default='experiments')
 
     parser = add_task_arguments(parent_parser)
     args = parser.parse_args()
@@ -42,7 +43,7 @@ def get_args():
 
     # set working dir
     current_time = strftime("%m-%d_0", gmtime())
-    args.output_dir = os.path.join('experiments', args.prefix + "_" + current_time)
+    args.output_dir = os.path.join(args.output_dir, args.prefix + "_" + current_time)
     if os.path.isdir(args.output_dir):
         while True:
             cur_exp_number = int(args.output_dir[-2:].replace('_', ""))
